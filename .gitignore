@@ -1,0 +1,6 @@
+# 模块
+node_modules/
+
+# 输出
+out/
+dist/
