@@ -141,7 +141,6 @@ export default {
         const header = this.getHeaderRow(firstWorkSheet);
         this.parseBaseDbcHeader(header);
         const data = XLSX.utils.sheet_to_json(firstWorkSheet);
-        // console.log("读取所有excel数据", data);
         let lastMsgKey;
         data.forEach((item) => {
           let index;
@@ -226,7 +225,7 @@ export default {
           this.baseDbcHeaderMap.set("signal_index", header);
         }
       });
-      console.log(this.baseDbcHeaderMap);
+      console.log("基准DBC头", this.baseDbcHeaderMap);
     },
     // 是否是基本报文行
     isBaseMsgRow: function (row) {
@@ -302,7 +301,6 @@ export default {
           const header = this.getHeaderRow(currentSheet);
           this.parseNewDbcHeader(header);
           const data = XLSX.utils.sheet_to_json(currentSheet);
-          // console.log("读取所有excel数据", data);
           let lastMsgKey;
           data.forEach((item) => {
             if (this.isNewMsgRow(item)) {
@@ -343,7 +341,6 @@ export default {
                 if (!this.dbcSignalNewIndexMap.has(signalKey)) {
                   this.dbcSignalNewMaxIndex++
                   this.dbcSignalNewIndexMap.set(signalKey, this.dbcSignalNewMaxIndex);
-                  // console.log("不匹配", signalKey)
                 }
               }
             } else {
@@ -633,7 +630,7 @@ export default {
           this.newDbcHeaderMap.set("signal_index", header);
         }
       });
-      // console.log(this.newDbcHeaderMap);
+      console.log(this.newDbcHeaderMap);
     },
     // 是否是信号Sheet
     isSignalSheet: function (sheet) {
@@ -746,38 +743,38 @@ export default {
           }
         }
         const newMsg = [{
-          "Msg Name\n报文名称": this.getNewKey(msgValue, "msg_name"),
-          "Msg Type\n报文类型": this.getNewKey(msgValue, "msg_type"),
-          "Msg ID\n报文标识符": this.getNewKey(msgValue, "msg_id"),
-          "Msg Send Type\n报文发送类型": this.getNewKey(msgValue, "msg_send_type"),
-          "Msg Cycle Time (ms)\n报文周期时间": this.getNewKey(msgValue, "msg_cycle_time"),
-          "Msg Length (Byte)\n报文长度": this.getNewKey(msgValue, "msg_length"),
-          "Signal Name\n信号名称": "",
-          "Signal Description\n信号描述": this.getNewKey(msgValue, "signal_description"),
-          "Byte Order\n排列格式(Intel/Motorola)": "",
-          "Start Byte\n起始字节": "",
-          "Start Bit\n起始位": "",
-          "Signal Send Type\n信号发送类型": "",
-          "Bit Length (Bit)\n信号长度": "",
-          "Data Type\n数据类型": "",
-          "Resolution\n精度": "",
-          "Offset\n偏移量": "",
-          "Signal Min. Value (phys)\n物理最小值": "",
-          "Signal Max. Value(phys)\n物理最大值": "",
-          "Signal Min. Value (Hex)\n总线最小值": "",
-          "Signal Max. Value(Hex)\n总线最大值": "",
-          "Initial Value(Hex)\n初始值": "",
-          "Invalid Value(Hex)无效值": "",
-          "Inactive Value(Hex)\n非使能值": "",
-          "Unit\n单位": "",
-          "Signal Value Description\n信号值描述": "",
-          "Msg Cycle Time Fast(ms)\n报文发送的快速周期(ms)": this.getNewKey(msgValue, "msg_cycle_time_fast"),
-          "Msg Nr. Of Repetition\n报文快速发送的次数": this.getNewKey(msgValue, "msg_nr_of_repetition"),
-          "Msg Delay Time(ms)\n报文延时时间(ms)": this.getNewKey(msgValue, "msg_delay_time"),
-          "源节点": this.getNewKey(msgValue, "source_node"),
-          "路由": this.getNewKey(msgValue, "routing"),
-          "Re_Message_ID": msgIndex,
-          "Re_Signal_ID": "",
+          "msg_mame": this.getNewKey(msgValue, "msg_name"),
+          "msg_type": this.getNewKey(msgValue, "msg_type"),
+          "msg_id": this.getNewKey(msgValue, "msg_id"),
+          "msg_send_type": this.getNewKey(msgValue, "msg_send_type"),
+          "msg_cycle_time": this.getNewKey(msgValue, "msg_cycle_time"),
+          "msg_length": this.getNewKey(msgValue, "msg_length"),
+          "signal_name": "",
+          "signal_description": this.getNewKey(msgValue, "signal_description"),
+          "signal_byte_order": "",
+          "signal_start_byte": "",
+          "signal_start_bit": "",
+          "signal_send_type": "",
+          "signal_bit_length": "",
+          "signal_data_type": "",
+          "signal_resolution": "",
+          "signal_offset": "",
+          "signal_min_value_phys": "",
+          "signal_max_value_phys": "",
+          "signal_min_value_hex": "",
+          "signal_max_value_hex": "",
+          "signal_initial_value_hex": "",
+          "signal_invalid_value_hex": "",
+          "signal_inactive_value_hex": "",
+          "signal_unit": "",
+          "signal_value_description": "",
+          "msg_cycle_time_fast": this.getNewKey(msgValue, "msg_cycle_time_fast"),
+          "msg_nr_of_repetition": this.getNewKey(msgValue, "msg_nr_of_repetition"),
+          "msg_delay_time": this.getNewKey(msgValue, "msg_delay_time"),
+          "source_node": this.getNewKey(msgValue, "source_node"),
+          "routing": this.getNewKey(msgValue, "routing"),
+          "re_message_id": msgIndex,
+          "re_signal_id": "",
           "是否新增": msgNew
         }]
         newNewDbc = newNewDbc.concat(newMsg)
@@ -799,32 +796,28 @@ export default {
                 signalNew = true
               }
             }
-            console.log("signalValue:", signalValue);
-            console.log("signal_byte_order:", this.newDbcHeaderMap.get("signal_byte_order"));
-            console.log("signal_byte_order_value:", this.getNewKey(signalValue, "signal_byte_order"));
-            console.log("signal_byte_order_row:", this.getRowKey(signalValue, "排列格式"));
             const newSignal = [{
-              "Signal Name\n信号名称": this.getNewKey(signalValue, "signal_name"),
-              "Signal Description\n信号描述": this.getNewKey(signalValue, "signal_description"),
-              "Byte Order\n排列格式(Intel/Motorola)": this.getRowKey(signalValue, "排列格式"),
-              "Start Byte\n起始字节": this.getNewKey(signalValue, "signal_start_byte"),
-              "Start Bit\n起始位": this.getNewKey(signalValue, "signal_start_bit"),
-              "Signal Send Type\n信号发送类型": this.getNewKey(signalValue, "signal_send_type"),
-              "Bit Length (Bit)\n信号长度": this.getNewKey(signalValue, "signal_bit_length"),
-              "Data Type\n数据类型": this.getNewKey(signalValue, "signal_data_type"),
-              "Resolution\n精度": this.getNewKey(signalValue, "signal_resolution"),
-              "Offset\n偏移量": this.getNewKey(signalValue, "signal_offset"),
-              "Signal Min. Value (phys)\n物理最小值": this.getNewKey(signalValue, "signal_min_value_phys"),
-              "Signal Max. Value(phys)\n物理最大值": this.getNewKey(signalValue, "signal_max_value_phys"),
-              "Signal Min. Value (Hex)\n总线最小值": this.getNewKey(signalValue, "signal_min_value_hex"),
-              "Signal Max. Value(Hex)\n总线最大值": this.getNewKey(signalValue, "signal_max_value_hex"),
-              "Initial Value(Hex)\n初始值": this.getNewKey(signalValue, "signal_initial_value_hex"),
-              "Invalid Value(Hex)无效值": this.getNewKey(signalValue, "signal_invalid_value_hex"),
-              "Inactive Value(Hex)\n非使能值": this.getNewKey(signalValue, "signal_inactive_value_hex"),
-              "Unit\n单位": this.getNewKey(signalValue, "signal_unit"),
-              "Signal Value Description\n信号值描述": this.getNewKey(signalValue, "signal_value_description"),
-              "源节点": this.getNewKey(signalValue, "source_node"),
-              "Re_Signal_ID": signalIndex,
+              "signal_name": this.getNewKey(signalValue, "signal_name"),
+              "signal_description": this.getNewKey(signalValue, "signal_description"),
+              "signal_byte_order": this.getRowKey(signalValue, "排列格式"),
+              "signal_start_byte": this.getNewKey(signalValue, "signal_start_byte"),
+              "signal_start_bit": this.getNewKey(signalValue, "signal_start_bit"),
+              "signal_send_type": this.getNewKey(signalValue, "signal_send_type"),
+              "signal_bit_length": this.getNewKey(signalValue, "signal_bit_length"),
+              "signal_data_type": this.getNewKey(signalValue, "signal_data_type"),
+              "signal_resolution": this.getNewKey(signalValue, "signal_resolution"),
+              "signal_offset": this.getNewKey(signalValue, "signal_offset"),
+              "signal_min_value_phys": this.getNewKey(signalValue, "signal_min_value_phys"),
+              "signal_max_value_phys": this.getNewKey(signalValue, "signal_max_value_phys"),
+              "signal_min_value_hex": this.getNewKey(signalValue, "signal_min_value_hex"),
+              "signal_max_value_hex": this.getNewKey(signalValue, "signal_max_value_hex"),
+              "signal_initial_value_hex": this.getNewKey(signalValue, "signal_initial_value_hex"),
+              "signal_invalid_value_hex": this.getNewKey(signalValue, "signal_invalid_value_hex"),
+              "signal_inactive_value_hex": this.getNewKey(signalValue, "signal_inactive_value_hex"),
+              "signal_unit": this.getNewKey(signalValue, "signal_unit"),
+              "signal_value_description": this.getNewKey(signalValue, "signal_value_description"),
+              "source_node": this.getNewKey(signalValue, "source_node"),
+              "re_signal_id": signalIndex,
               "是否新增": signalNew
             }]
             newNewDbc = newNewDbc.concat(newSignal)
@@ -874,17 +867,17 @@ export default {
         msgKey = signalKey.split("-")[0] + "-" + signalKey.split("-")[1] + "-" + signalKey.split("-")[2]
         if (msgKey !== lastMsgKey) {
           const newMsg = [{
-            "Msg Name\n报文名称": signalKey.split("-")[0],
-            "Msg ID\n报文标识符": signalKey.split("-")[1],
-            "Msg Length (Byte)\n报文长度": signalKey.split("-")[2],
-            "Re_Message_ID": this.baseMsgIndexMap.get(msgKey)
+            "msg_name": signalKey.split("-")[0],
+            "msg_id": signalKey.split("-")[1],
+            "msg_length": signalKey.split("-")[2],
+            "re_message_id": this.baseMsgIndexMap.get(msgKey)
           }]
           newDiffDbc = newDiffDbc.concat(newMsg)
           lastMsgKey = msgKey
         }
         const newSignal = [{
-          "Signal Name\n信号名称": signalKey.split("-")[3],
-          "Re_Signal_ID": index
+          "signal_name": signalKey.split("-")[3],
+          "re_signal_id": index
         }]
         newDiffDbc = newDiffDbc.concat(newSignal)
       }
